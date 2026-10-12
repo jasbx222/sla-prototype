@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>الكتب الواكفة — نموذج أولي</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="proto-banner">نموذج أولي — بيانات تجريبية <button id="resetBtn" class="link-btn">إعادة ضبط البيانات</button></div>
+<header class="topbar">
+  <div class="tb-side">
+    <div class="menu-ico">☰</div><span class="tb-title">المراسلات</span>
+  </div>
+  <div class="logo">onfinity</div>
+  <div class="tb-side tb-left">
+    <div class="role-switch" role="tablist">
+      <button data-role="emp" class="active">موظف</button><button data-role="mgr">مدير</button>
+    </div>
+    <div class="bell-wrap">
+      <button id="bellBtn" class="icon-btn" aria-label="التنبيهات">🔔<span id="bellCount" class="bell-count">0</span></button>
+      <div id="notifPanel" class="notif-panel hidden">
+        <div class="np-head"><b>التنبيهات</b><button id="markRead" class="link-btn dark">تعليم الكل كمقروء</button></div>
+        <div id="notifList"></div>
+      </div>
+    </div>
+    <div class="user-chip" id="userChip">👤 أحمد كريم</div>
+  </div>
+</header>
+
+<main class="page">
+  <nav class="tabs" id="mainTabs">
+    <button data-tab="inbox" class="active">صندوق الوارد</button>
+    <button data-tab="dash" class="mgr-only">لوحة المدير</button>
+    <button data-tab="settings">إعدادات المدد</button>
+  </nav>
+
+  <section class="card sim">
+    <div class="sim-title">⏱ محاكاة مرور الوقت <span class="muted" id="simClock"></span></div>
+    <div class="sim-ctrls">
+      <label>السرعة
+        <select id="speedSel"><option value="1">حقيقي ×1</option><option value="60">×60 (دقيقة/ث)</option><option value="3600">×3600 (ساعة/ث)</option><option value="21600">×21600 (6 ساعات/ث)</option></select>
+      </label>
+      <button class="btn ghost" data-jump="3600000">+ ساعة</button>
+      <button class="btn ghost" data-jump="21600000">+ 6 ساعات</button>
+      <button class="btn primary" data-jump="86400000">+ يوم</button>
+    </div>
+  </section>
+
+  <!-- INBOX -->
+  <section id="tab-inbox" class="tab-pane">
+    <div class="card filters">
+      <div class="f-field grow"><label>بحث</label><input id="q" placeholder="ابحث برقم الكتاب أو الموضوع أو الجهة المرسلة..."></div>
+      <div class="f-field"><label>نوع المدة</label><select id="typeF"><option value="">كل الأنواع</option></select></div>
+      <div class="f-field"><label>الترتيب</label><select id="sortF"><option value="late">الأكثر تأخراً أولاً</option><option value="new">الأحدث وروداً</option></select></div>
+    </div>
+    <div class="card chips-row" id="statusChips"></div>
+    <div class="card table-card">
+      <table class="tbl" id="inboxTbl">
+        <thead><tr><th>رقم الكتاب</th><th>تاريخ الورود</th><th>الجهة المرسلة</th><th>موضوع الكتاب</th><th>نوع المدة</th><th>عند</th><th>الوقت المتبقي</th><th>الحالة</th><th>عرض</th></tr></thead>
+        <tbody></tbody>
+      </table>
+      <div id="emptyMsg" class="empty hidden">لا توجد كتب ضمن هذا الفلتر</div>
+    </div>
+  </section>
+
+  <!-- DASH -->
+  <section id="tab-dash" class="tab-pane hidden">
+    <div class="kpis" id="kpis"></div>
+    <div class="grid2">
+      <div class="card pad"><h3>الكتب المفتوحة حسب القسم</h3><div id="deptChart"></div></div>
+      <div class="card pad"><h3>أكثر الموظفين تأخراً</h3><table class="tbl small" id="lateEmp"><thead><tr><th>الموظف</th><th>القسم</th><th>متأخرة</th><th>مُصعَّدة</th><th>أقصى تأخير</th></tr></thead><tbody></tbody></table></div>
+    </div>
+    <div class="card pad"><h3>الكتب الواكفة</h3><table class="tbl small" id="stuckTbl"><thead><tr><th>رقم الكتاب</th><th>الموضوع</th><th>عند</th><th>التأخير</th><th>الحالة</th><th>إجراءات</th></tr></thead><tbody></tbody></table><div id="stuckEmpty" class="empty hidden">ماكو كتب واكفة 👌</div></div>
+    <div class="card pad" id="extReqCard"><h3>طلبات التمديد بانتظار الموافقة</h3><div id="extReqs"></div></div>
+  </section>
+
+  <!-- SETTINGS -->
+  <section id="tab-settings" class="tab-pane hidden">
+    <div class="card pad settings">
+      <h3>مدة الإنجاز لكل نوع</h3>
+      <p class="muted">التعديل يطبَّق مباشرة على كل الكتب المفتوحة.</p>
+      <div id="slaRows"></div>
+      <h3 style="margin-top:22px">قاعدة التصعيد</h3>
+      <div class="set-row"><span>يُصعَّد الكتاب إلى المدير المباشر بعد</span><input type="number" id="escDays" min="0" step="0.5"><span>يوم من تجاوز الموعد</span></div>
+      <div class="set-row"><span>تنبيه "قرب الموعد" عند بقاء</span><input type="number" id="nearPct" min="5" max="90" step="5"><span>% من المدة</span></div>
+      <p id="setNote" class="muted"></p>
+    </div>
+  </section>
+</main>
+
+<!-- DRAWER -->
+<div id="overlay" class="overlay hidden"></div>
+<aside id="drawer" class="drawer" aria-hidden="true">
+  <div class="dr-head"><div><div class="dr-num" id="drNum"></div><div class="dr-sub" id="drSub"></div></div><button class="icon-btn light" id="drClose">✕</button></div>
+  <div class="dr-body" id="drBody"></div>
+  <div class="dr-foot" id="drFoot">
+    <button class="btn primary" id="actBtn">✓ اتخاذ إجراء</button>
+    <button class="btn ghost" id="extBtn">طلب تمديد</button>
+  </div>
+</aside>
+
+<!-- MODAL -->
+<div id="modal" class="modal hidden">
+  <div class="modal-box">
+    <div class="m-head"><div class="m-ico">⏳</div><div><div class="m-title">طلب تمديد المدة</div><div class="m-sub">يحتاج موافقة المدير المباشر</div></div></div>
+    <label>السبب<textarea id="extReason" rows="3" placeholder="مثلاً: بانتظار رد جهة خارجية"></textarea></label>
+    <label>الموعد الجديد المقترح<input type="datetime-local" id="extDate"></label>
+    <div class="m-err hidden" id="extErr"></div>
+    <div class="m-foot"><button class="btn ghost" id="extCancel">إلغاء</button><button class="btn primary" id="extSend">إرسال الطلب</button></div>
+  </div>
+</div>
+
+<div id="toasts" class="toasts"></div>
+<script src="app.js"></script>
+</body>
+</html>
