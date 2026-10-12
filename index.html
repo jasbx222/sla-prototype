@@ -1,116 +1,368 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>الكتب الواكفة — نموذج أولي</title>
-<link rel="stylesheet" href="styles.css">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>المراسلات — نموذج أولي: متابعة مدد الإنجاز</title>
+<link rel="stylesheet" href="lib/bootstrap5/bootstrap.min.css" />
+<link rel="stylesheet" href="css/Loading.css" />
+<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/site.css" />
+<link rel="stylesheet" href="css/util.css" />
+<link rel="stylesheet" href="css/items.css" />
+<link rel="stylesheet" href="css/table.css" />
+<link rel="stylesheet" href="css/pagination.css" />
+<link rel="stylesheet" href="css/shared/tagPicker.css" />
+<link rel="stylesheet" href="css/nav.css" />
+<link rel="stylesheet" href="css/notifications.css" />
+<link rel="stylesheet" href="css/shared/referencedDocumentDetails.css" />
+<link rel="stylesheet" href="css/sidebar.css" />
+<link rel="stylesheet" href="css/mainPage.css" />
+<link rel="stylesheet" href="css/reportPages.css" />
+<link rel="stylesheet" href="css/docMarginField.css" />
+<link rel="stylesheet" href="css/createInternalDocument.css" />
+<link rel="stylesheet" href="css/workflowHistory.css" />
+<link rel="stylesheet" href="css/shared/displayDocumentSplit.css" />
+<link rel="stylesheet" href="sla.css" />
 </head>
-<body>
-<div class="proto-banner">نموذج أولي — بيانات تجريبية <button id="resetBtn" class="link-btn">إعادة ضبط البيانات</button></div>
-<header class="topbar">
-  <div class="tb-side">
-    <div class="menu-ico">☰</div><span class="tb-title">المراسلات</span>
-  </div>
-  <div class="logo">onfinity</div>
-  <div class="tb-side tb-left">
-    <div class="role-switch" role="tablist">
-      <button data-role="emp" class="active">موظف</button><button data-role="mgr">مدير</button>
+<body class="min-vh-100">
+<div class="proto-banner">نموذج أولي — بيانات تجريبية</div>
+<header>
+<div id="nav" class="nav">
+ <div class="content_header_tool">
+  <div class="header_profile_cluster">
+   <button type="button" id="NotificationBellTrigger" class="header_bell_box" title="الإشعارات" aria-label="الإشعارات">
+    <img class="header_bell_icon" src="img/bell_icon_white.svg" alt="" />
+    <span id="NotificationBellBadge" class="header_bell_badge" hidden>0</span>
+   </button>
+   <div class="header_role_chip_wrap">
+    <button type="button" class="header_role_chip" id="ActiveRoleChip" aria-haspopup="listbox" aria-expanded="false">
+     <img src="img/arrow_bottom_icon.svg" class="header_role_chip_arrow" alt="" />
+     <span id="ActiveRoleLabel"></span>
+    </button>
+    <div class="header_role_dropdown" id="RoleSwitcherDropdown" hidden>
+     <ul class="header_role_dropdown_list" id="RoleSwitcherList" role="listbox"></ul>
     </div>
-    <div class="bell-wrap">
-      <button id="bellBtn" class="icon-btn" aria-label="التنبيهات">🔔<span id="bellCount" class="bell-count">0</span></button>
-      <div id="notifPanel" class="notif-panel hidden">
-        <div class="np-head"><b>التنبيهات</b><button id="markRead" class="link-btn dark">تعليم الكل كمقروء</button></div>
-        <div id="notifList"></div>
-      </div>
-    </div>
-    <div class="user-chip" id="userChip">👤 أحمد كريم</div>
+   </div>
+   <div class="header_name_chip">
+    <p id="HeaderUserName"></p>
+    <span class="header_name_chip_avatar"><img src="img/profile_icon_white.svg" alt="" /></span>
+   </div>
   </div>
+  <div class="Logo_small_icon icon header_logo_center"><img src="img/Logo_Integ.png" width="20" alt="" /></div>
+  <div class="header_title_area">
+   <div class="space-s1"><div class="d-flex">
+    <p id="HeaderReportTitle"> المراسلات - </p>
+    <a class="contentBox-report"><button id="navbar_toggle_btn" class="navbar-toggle-btn" title="القائمة">
+     <svg width="25" height="19" viewBox="0 0 25 19" fill="none"><rect y="0" width="24" height="2" rx="1" fill="#8F8F8F"/><rect y="8.2" width="16" height="2" rx="1" fill="#8F8F8F"/><rect x="19" y="8.2" width="5" height="2" rx="1" fill="#8F8F8F"/><rect y="16.5" width="24" height="2" rx="1" fill="#8F8F8F"/></svg>
+    </button></a>
+   </div></div>
+  </div>
+ </div>
+</div>
 </header>
 
-<main class="page">
-  <nav class="tabs" id="mainTabs">
-    <button data-tab="inbox" class="active">صندوق الوارد</button>
-    <button data-tab="dash" class="mgr-only">لوحة المدير</button>
-    <button data-tab="settings">إعدادات المدد</button>
-  </nav>
+<div class="w-100 min-vh-100" id="sidebar-content">
+<main role="main" class="min-vh-100">
+ <aside id="sidenav-content" class="sidenav dispalySide sbn-root" dir="rtl" aria-label="القائمة الرئيسية">
+  <div class="sbn-header">
+   <div class="sbn-header__brand"><img src="img/Logo_Integ.png" alt="" class="sbn-header__logo" /><div class="sbn-header__text"><span class="sbn-header__title">نظام المراسلات</span></div></div>
+   <div id="close-btn" class="sbn-icon-btn" title="إغلاق" role="button" tabindex="0"><img width="18" src="img/close_icon.svg" alt="" /></div>
+  </div>
+  <div class="sbn-search"><input type="text" id="sbnSearchInput" class="sbn-search__input" placeholder="ابحث في القائمة..." autocomplete="off" /></div>
+  <nav class="sbn-body" id="sbnBody"><div id="sbnGroups"></div></nav>
+  <div class="sbn-footer"><a class="sbn-footer__logout" href="#"><span>تسجيل الخروج</span></a></div>
+ </aside>
 
-  <section class="card sim">
-    <div class="sim-title">⏱ محاكاة مرور الوقت <span class="muted" id="simClock"></span></div>
-    <div class="sim-ctrls">
-      <label>السرعة
-        <select id="speedSel"><option value="1">حقيقي ×1</option><option value="60">×60 (دقيقة/ث)</option><option value="3600">×3600 (ساعة/ث)</option><option value="21600">×21600 (6 ساعات/ث)</option></select>
-      </label>
-      <button class="btn ghost" data-jump="3600000">+ ساعة</button>
-      <button class="btn ghost" data-jump="21600000">+ 6 ساعات</button>
-      <button class="btn primary" data-jump="86400000">+ يوم</button>
-    </div>
-  </section>
+ <div class="pg-wrapper min-vh-100" id="pg-wrapper">
 
-  <!-- INBOX -->
-  <section id="tab-inbox" class="tab-pane">
-    <div class="card filters">
-      <div class="f-field grow"><label>بحث</label><input id="q" placeholder="ابحث برقم الكتاب أو الموضوع أو الجهة المرسلة..."></div>
-      <div class="f-field"><label>نوع المدة</label><select id="typeF"><option value="">كل الأنواع</option></select></div>
-      <div class="f-field"><label>الترتيب</label><select id="sortF"><option value="late">الأكثر تأخراً أولاً</option><option value="new">الأحدث وروداً</option></select></div>
+ <!-- ===================== MainPage ===================== -->
+ <div class="main_content_box main-page-shell page" id="page-MainPage">
+  <section class="correspondence-card direction_rtl">
+   <div class="correspondence-filter-card" role="search">
+    <div class="correspondence-filter-body"><div class="correspondence-filter-grid">
+     <div class="correspondence-field correspondence-field-wide">
+      <label for="SearchByForCorrecpondence">بحث</label>
+      <div class="input_content_icon_box">
+       <input id="SearchByForCorrecpondence" class="input_elem input_style input_height_style border_radius_actions_1" type="text" placeholder="ابحث برقم الكتاب أو الموضوع أو الجهة المرسلة..." />
+       <img class="icon_elem" src="img/search_icon.svg" alt="" />
+      </div>
+     </div>
+     <div class="correspondence-field"><label>من تاريخ</label><input class="input_elem input_style input_height_style border_radius_actions_1" type="date" /></div>
+     <div class="correspondence-field"><label>إلى تاريخ</label><input class="input_elem input_style input_height_style border_radius_actions_1" type="date" /></div>
+     <div class="correspondence-field"><label for="DocTypeFilter">نوع الكتاب</label>
+      <select id="DocTypeFilter" class="input_elem input_style input_height_style border_radius_actions_1"><option value="">كل الأنواع</option><option value="OUT">صادر</option><option value="INC">وارد</option><option value="INT">مذكرة داخلية</option></select></div>
+     <div class="correspondence-field"><label for="PriorityFilter">الأولوية</label>
+      <select id="PriorityFilter" class="input_elem input_style input_height_style border_radius_actions_1"><option value="">كل الأولويات</option></select></div>
+     <div class="correspondence-field sla-new-field"><label for="SlaFilter">المدة <span class="sla-new-tag">جديد</span></label>
+      <select id="SlaFilter" class="input_elem input_style input_height_style border_radius_actions_1"><option value="">الكل</option><option value="ok">ضمن المدة</option><option value="warn">قرب الموعد</option><option value="bad">متأخر</option><option value="esc">مُصعَّد</option></select></div>
+     <div class="correspondence-filter-actions">
+      <button id="ApplyFilters" class="correspondence-apply-filters-btn font_size_2m_button border_radius_actions_1" type="button"><img src="img/apply_filters_icon.svg" alt="" /> تطبيق الفلاتر</button>
+      <button id="ClearFilters" class="correspondence-reset-filters-btn border_radius_actions_1" type="button" title="مسح الفلاتر"><img src="img/reset_filters_icon.svg" alt="" /></button>
+     </div>
+    </div></div>
+   </div>
+   <div class="org-category-bar"><div class="org-category-tabs" id="MainOrgCategoryTabs"></div></div>
+   <div class="correspondence-table-shell position-relative">
+    <div class="correspondence-table-scroll">
+     <table class="table_style table_dir_rtl correspondence-data-table" id="CorrespondenceMainTable">
+      <thead><tr><th>رقم الكتاب</th><th>تاريخ الكتاب</th><th>تاريخ آخر إجابة</th><th>نوع الكتاب</th><th>الأولوية</th><th>الجهة المرسلة للكتاب</th><th>موضوع الكتاب</th><th>الهامش</th><th>الموضوع الثانوي</th><th>الحالة</th><th class="sla-col-head">المدة المتبقية</th><th>الوسوم</th><th>عرض الكتاب</th><th>الإجراءات</th></tr></thead>
+      <tbody id="correspondencetbodyForMain" class="text_size_3x tbody_relative_postion"></tbody>
+     </table>
     </div>
-    <div class="card chips-row" id="statusChips"></div>
-    <div class="card table-card">
-      <table class="tbl" id="inboxTbl">
-        <thead><tr><th>رقم الكتاب</th><th>تاريخ الورود</th><th>الجهة المرسلة</th><th>موضوع الكتاب</th><th>نوع المدة</th><th>عند</th><th>الوقت المتبقي</th><th>الحالة</th><th>عرض</th></tr></thead>
-        <tbody></tbody>
-      </table>
-      <div id="emptyMsg" class="empty hidden">لا توجد كتب ضمن هذا الفلتر</div>
-    </div>
+    <div class="no_record_box sla-empty" id="NoRecordMessage" hidden><img src="img/no_record_icon.svg" alt="" /><div>لا توجد نتائج</div></div>
+   </div>
   </section>
+ </div>
 
-  <!-- DASH -->
-  <section id="tab-dash" class="tab-pane hidden">
-    <div class="kpis" id="kpis"></div>
-    <div class="grid2">
-      <div class="card pad"><h3>الكتب المفتوحة حسب القسم</h3><div id="deptChart"></div></div>
-      <div class="card pad"><h3>أكثر الموظفين تأخراً</h3><table class="tbl small" id="lateEmp"><thead><tr><th>الموظف</th><th>القسم</th><th>متأخرة</th><th>مُصعَّدة</th><th>أقصى تأخير</th></tr></thead><tbody></tbody></table></div>
+ <!-- ===================== CreateInternalDocument ===================== -->
+ <div class="main_content_box cid-shell page" id="page-CreateInternalDocument" hidden>
+  <div class="cid-page-header">
+   <div class="cid-header-info">
+    <div class="cid-header-icon-box"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M12 12v6M9 15h6"/></svg></div>
+    <div class="cid-header-text"><h1 class="cid-header-title">انشاء مذكرة داخلية</h1><p class="cid-header-subtitle">تحديد بيانات الموضوع، تفاصيل المذكرة، المرفقات، والربط بالكتب والمستندات ذات الصلة</p></div>
+   </div>
+   <div class="cid-header-badges"><span class="cid-badge-pill is-primary"><span class="cid-badge-dot"></span>مراسلة داخلية</span></div>
+  </div>
+  <div class="cid-grid">
+   <div class="cid-col-primary">
+    <div class="cid-card">
+     <div class="cid-card-header"><h2 class="cid-card-title"><span class="cid-card-icon">▤</span><span>بيانات الموضوع والنموذج</span></h2><span class="cid-card-badge">البيانات الأساسية</span></div>
+     <div class="cid-field"><label class="cid-label" for="CidSubject"><span class="cid-label-title">الموضوع <span class="required-field-mark">*</span></span></label>
+      <select id="CidSubject" class="input_elem input_style cid-select"><option value="">اضغط هنا لاختيار الموضوع...</option></select></div>
+     <div class="cid-field"><label class="cid-label" for="CidTemplate"><span class="cid-label-title">نموذج المستند (القالب)</span></label>
+      <select id="CidTemplate" class="input_elem input_style cid-select"><option>مذكرة داخلية — القالب الرسمي</option><option>كتاب رسمي</option></select></div>
+     <div class="cid-fields-row">
+      <div class="cid-field"><label class="cid-label" for="PriorityForInternalDocumentEditor"><span class="cid-label-title">الأولوية <span class="required-field-mark">*</span></span></label>
+       <select id="PriorityForInternalDocumentEditor" class="input_elem input_style cid-select"></select></div>
+      <div class="cid-field"><label class="cid-label" for="LastAnswerDateForInternalDocumentEditor"><span class="cid-label-title">تاريخ آخر رد</span></label>
+       <input id="LastAnswerDateForInternalDocumentEditor" class="input_elem input_style cid-input" type="date" /></div>
+     </div>
+     <!-- NEW: مدة الإنجاز -->
+     <div class="sla-group" id="CidSlaGroup">
+      <div class="sla-group-head"><span class="cid-label-title">مدة الإنجاز</span><span class="sla-new-tag">جديد</span><span class="sla-hint">تُحسب تلقائياً من الأولوية</span></div>
+      <div class="cid-fields-row">
+       <div class="cid-field"><label class="cid-label" for="CidSlaDays"><span class="cid-label-title">المدة (يوم)</span></label>
+        <input id="CidSlaDays" class="input_elem input_style cid-input" type="number" min="0.5" step="0.5" /></div>
+       <div class="cid-field"><label class="cid-label"><span class="cid-label-title">موعد الإنجاز المحسوب</span></label>
+        <div class="sla-deadline-box" id="CidSlaDeadline">—</div></div>
+      </div>
+      <div class="cid-field" id="CidSlaReasonBox" hidden><label class="cid-label" for="CidSlaReason"><span class="cid-label-title">سبب تغيير المدة <span class="required-field-mark">*</span></span></label>
+       <input id="CidSlaReason" class="input_elem input_style cid-input" type="text" placeholder="مثلاً: يحتاج تنسيق مع جهة خارجية" /></div>
+     </div>
     </div>
-    <div class="card pad"><h3>الكتب الواكفة</h3><table class="tbl small" id="stuckTbl"><thead><tr><th>رقم الكتاب</th><th>الموضوع</th><th>عند</th><th>التأخير</th><th>الحالة</th><th>إجراءات</th></tr></thead><tbody></tbody></table><div id="stuckEmpty" class="empty hidden">ماكو كتب واكفة 👌</div></div>
-    <div class="card pad" id="extReqCard"><h3>طلبات التمديد بانتظار الموافقة</h3><div id="extReqs"></div></div>
-  </section>
+    <div class="cid-card">
+     <div class="cid-card-header"><h2 class="cid-card-title"><span class="cid-card-icon">✎</span><span>تفاصيل المذكرة</span></h2><span class="cid-card-badge">المحتوى والهامش</span></div>
+     <div class="cid-field doc-margin-field"><label class="doc-margin-field__label" for="CidManualSubject">الموضوع</label>
+      <textarea id="CidManualSubject" class="input_elem input_style cid-textarea" rows="2" placeholder="اكتب أي موضوع أو وصف تريده لهذه المذكرة..."></textarea></div>
+     <div class="cid-field doc-margin-field"><label class="doc-margin-field__label" for="CidMargin">الهامش</label>
+      <textarea id="CidMargin" class="input_elem input_style cid-textarea" rows="2" placeholder="اكتب هامش الإحالة أو التوجيه الموجه إلى الجهة المختصة..."></textarea></div>
+    </div>
+   </div>
+   <div class="cid-col-secondary">
+    <div class="cid-card">
+     <div class="cid-card-header"><h2 class="cid-card-title"><span class="cid-card-icon">⇄</span><span>الكتب والمستندات المرتبطة</span></h2><span class="cid-card-badge">الربط المرجعي</span></div>
+     <div class="cid-field"><label class="cid-label"><span class="cid-label-title">نوع المستند المراد ربطه</span></label>
+      <select class="input_elem input_style cid-select"><option>بدون ربط</option><option>كتاب وارد</option><option>كتاب صادر</option><option>مذكرة داخلية</option></select></div>
+    </div>
+    <div class="cid-card">
+     <div class="cid-card-header"><h2 class="cid-card-title"><span class="cid-card-icon">⇪</span><span>المرفقات والوثائق الداعمة</span></h2><span class="cid-card-badge">الملفات المرفقة</span></div>
+     <label class="cid-dropzone"><div class="cid-dropzone-text"><span class="cid-dropzone-title">اضغط هنا لرفع الوثائق والمستندات</span><span class="cid-dropzone-hint">الصيغ المدعومة: PDF, JPG, JPEG, PNG (يمكن رفع عدة ملفات)</span></div></label>
+    </div>
+    <div class="cid-card">
+     <div class="cid-card-header"><h2 class="cid-card-title"><span class="cid-card-icon">➤</span><span>اتخاذ إجراء مباشرة</span></h2><span class="cid-card-badge">مسار العمل (اختياري)</span></div>
+     <div class="cid-field"><label class="cid-label" for="CidProducer"><span class="cid-label-title">إرسال إلى</span></label>
+      <select id="CidProducer" class="input_elem input_style cid-select"><option value="">بدون إجراء (يبقى في صندوقي)</option></select></div>
+     <div class="cid-field"><label class="cid-label" for="CidStatus"><span class="cid-label-title">الحالة</span></label>
+      <select id="CidStatus" class="input_elem input_style cid-select status-select"></select></div>
+     <div class="cid-field" id="CidUsersBox" hidden><label class="cid-label" for="CidUser"><span class="cid-label-title">اختر المستخدمين</span></label>
+      <select id="CidUser" class="input_elem input_style cid-select"></select></div>
+    </div>
+   </div>
+   <div class="cid-footer-action"><div class="cid-action-card">
+    <button id="SubmitNewActionForInternalDocumentEditor" type="button" class="cid-submit-btn"><span>حفظ وإنشاء المذكرة</span></button>
+   </div></div>
+  </div>
+ </div>
 
-  <!-- SETTINGS -->
-  <section id="tab-settings" class="tab-pane hidden">
-    <div class="card pad settings">
-      <h3>مدة الإنجاز لكل نوع</h3>
-      <p class="muted">التعديل يطبَّق مباشرة على كل الكتب المفتوحة.</p>
-      <div id="slaRows"></div>
-      <h3 style="margin-top:22px">قاعدة التصعيد</h3>
-      <div class="set-row"><span>يُصعَّد الكتاب إلى المدير المباشر بعد</span><input type="number" id="escDays" min="0" step="0.5"><span>يوم من تجاوز الموعد</span></div>
-      <div class="set-row"><span>تنبيه "قرب الموعد" عند بقاء</span><input type="number" id="nearPct" min="5" max="90" step="5"><span>% من المدة</span></div>
-      <p id="setNote" class="muted"></p>
-    </div>
+ <!-- ===================== Report pages (Incoming/Outgoing/Internal) ===================== -->
+ <div class="main_content_box report-page-shell page" id="page-Report" hidden>
+  <section class="correspondence-card direction_rtl">
+   <div class="correspondence-filter-card" role="search"><div class="correspondence-filter-body"><div class="correspondence-filter-grid">
+    <div class="correspondence-field correspondence-field-wide"><label id="RepNoLabel">رقم الكتاب</label><input class="input_elem input_style input_height_style border_radius_actions_1" type="text" /></div>
+    <div class="correspondence-field"><label>من تاريخ</label><input class="input_elem input_style input_height_style border_radius_actions_1" type="date" /></div>
+    <div class="correspondence-field"><label>الى تاريخ</label><input class="input_elem input_style input_height_style border_radius_actions_1" type="date" /></div>
+    <div class="correspondence-filter-actions"><button class="correspondence-apply-filters-btn font_size_2m_button border_radius_actions_1" type="button"><img src="img/apply_filters_icon.svg" alt="" /> بحث</button>
+     <a class="Print correspondence-print-btn border_radius_actions_1" title="طباعة" role="button"><img src="img/print_icon.svg" alt="" /></a></div>
+   </div></div></div>
+   <div class="org-category-bar"><h2 class="report-section-heading" id="ReportHeading"></h2></div>
+   <div class="correspondence-table-shell position-relative"><div class="correspondence-table-scroll">
+    <table class="table_style table_dir_rtl correspondence-data-table">
+     <thead><tr><th>رقم الكتاب</th><th>تاريخ الكتاب</th><th>الجهة المرسلة</th><th>الموضوع</th><th>الأولوية</th><th>لدى</th><th>الحالة</th><th class="sla-col-head">المدة</th><th>عرض الكتاب</th><th>الحالات</th></tr></thead>
+     <tbody id="ReportTbody" class="text_size_3x"></tbody>
+    </table></div></div>
   </section>
+ </div>
+
+ <!-- ===================== NEW: LateBooksFollowUp ===================== -->
+ <div class="main_content_box report-page-shell page" id="page-LateBooks" hidden>
+  <section class="correspondence-card direction_rtl">
+   <div class="correspondence-filter-card" role="search"><div class="correspondence-filter-body"><div class="correspondence-filter-grid">
+    <div class="correspondence-field"><label for="LbDept">القسم</label><select id="LbDept" class="input_elem input_style input_height_style border_radius_actions_1"><option value="">كل الأقسام</option></select></div>
+    <div class="correspondence-field"><label for="LbStatus">حالة المدة</label><select id="LbStatus" class="input_elem input_style input_height_style border_radius_actions_1"><option value="late">المتأخرة وقرب الموعد</option><option value="bad">المتأخرة فقط</option><option value="esc">المُصعَّدة فقط</option><option value="all">كل المفتوحة</option></select></div>
+    <div class="correspondence-filter-actions"><button id="LbApply" class="correspondence-apply-filters-btn font_size_2m_button border_radius_actions_1" type="button"><img src="img/apply_filters_icon.svg" alt="" /> بحث</button>
+     <a class="Print correspondence-print-btn border_radius_actions_1" title="طباعة" role="button"><img src="img/print_icon.svg" alt="" /></a></div>
+   </div></div></div>
+   <div class="org-category-bar"><h2 class="report-section-heading">متابعة الكتب المتأخرة</h2></div>
+   <div class="sla-kpis" id="LbKpis"></div>
+   <div class="sla-dash-grid">
+    <div class="sla-panel"><div class="sla-panel-title">الكتب المفتوحة حسب القسم</div><div id="LbDeptChart"></div></div>
+    <div class="sla-panel"><div class="sla-panel-title">أكثر الموظفين تأخراً</div>
+     <table class="table_style table_dir_rtl correspondence-data-table"><thead><tr><th>الموظف</th><th>القسم</th><th>متأخرة</th><th>مُصعَّدة</th><th>أقصى تأخير</th></tr></thead><tbody id="LbEmpTbody" class="text_size_3x"></tbody></table></div>
+   </div>
+   <div class="correspondence-table-shell position-relative"><div class="correspondence-table-scroll">
+    <table class="table_style table_dir_rtl correspondence-data-table">
+     <thead><tr><th>رقم الكتاب</th><th>الموضوع</th><th>الأولوية</th><th>لدى</th><th>القسم</th><th>موعد الإنجاز</th><th class="sla-col-head">المدة المتبقية</th><th>عرض الكتاب</th><th>الإجراءات</th></tr></thead>
+     <tbody id="LbTbody" class="text_size_3x"></tbody>
+    </table></div>
+    <div class="no_record_box sla-empty" id="LbEmpty" hidden><img src="img/no_record_icon.svg" alt="" /><div>لا توجد كتب متأخرة</div></div>
+   </div>
+  </section>
+ </div>
+
+ <!-- ===================== NEW: SLA settings ===================== -->
+ <div class="main_content_box cid-shell page" id="page-SlaSettings" hidden>
+  <div class="cid-page-header"><div class="cid-header-info">
+   <div class="cid-header-icon-box"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+   <div class="cid-header-text"><h1 class="cid-header-title">إعدادات مدد الإنجاز</h1><p class="cid-header-subtitle">مدة الإنجاز الافتراضية لكل أولوية، وقاعدة التصعيد التلقائي للمسؤول المباشر</p></div></div>
+   <div class="cid-header-badges"><span class="cid-badge-pill is-primary"><span class="cid-badge-dot"></span>صلاحية الإدارة</span></div></div>
+  <div class="cid-grid">
+   <div class="cid-col-primary"><div class="cid-card">
+    <div class="cid-card-header"><h2 class="cid-card-title"><span class="cid-card-icon">⏱</span><span>المدة حسب الأولوية</span></h2><span class="cid-card-badge">ASI02_Priority</span></div>
+    <table class="table_style table_dir_rtl"><thead><tr><th>الأولوية</th><th>مدة الإنجاز (يوم)</th><th>تنبيه قرب الموعد</th></tr></thead><tbody id="SetPriorityTbody" class="text_size_3x"></tbody></table>
+   </div></div>
+   <div class="cid-col-secondary"><div class="cid-card">
+    <div class="cid-card-header"><h2 class="cid-card-title"><span class="cid-card-icon">⬆</span><span>قاعدة التصعيد</span></h2><span class="cid-card-badge">تلقائي</span></div>
+    <div class="cid-field"><label class="cid-label" for="SetEscDays"><span class="cid-label-title">يُصعَّد الكتاب للمسؤول المباشر بعد (يوم) من تجاوز الموعد</span></label><input id="SetEscDays" class="input_elem input_style cid-input" type="number" min="0" step="0.5" /></div>
+    <div class="cid-field"><label class="cid-label" for="SetNearPct"><span class="cid-label-title">تنبيه "قرب الموعد" عند بقاء (%) من المدة</span></label><input id="SetNearPct" class="input_elem input_style cid-input" type="number" min="5" max="90" step="5" /></div>
+    <div class="cid-field"><label class="cid-label"><span class="cid-label-title">التصعيد يتسجل كحركة بمسار العمل باسم</span></label><input class="input_elem input_style cid-input" value="النظام — تصعيد تلقائي" disabled /></div>
+   </div></div>
+   <div class="cid-footer-action"><div class="cid-action-card"><button id="SaveSettings" type="button" class="cid-submit-btn"><span>حفظ الإعدادات</span></button></div></div>
+  </div>
+ </div>
+
+ </div>
 </main>
-
-<!-- DRAWER -->
-<div id="overlay" class="overlay hidden"></div>
-<aside id="drawer" class="drawer" aria-hidden="true">
-  <div class="dr-head"><div><div class="dr-num" id="drNum"></div><div class="dr-sub" id="drSub"></div></div><button class="icon-btn light" id="drClose">✕</button></div>
-  <div class="dr-body" id="drBody"></div>
-  <div class="dr-foot" id="drFoot">
-    <button class="btn primary" id="actBtn">✓ اتخاذ إجراء</button>
-    <button class="btn ghost" id="extBtn">طلب تمديد</button>
-  </div>
-</aside>
-
-<!-- MODAL -->
-<div id="modal" class="modal hidden">
-  <div class="modal-box">
-    <div class="m-head"><div class="m-ico">⏳</div><div><div class="m-title">طلب تمديد المدة</div><div class="m-sub">يحتاج موافقة المدير المباشر</div></div></div>
-    <label>السبب<textarea id="extReason" rows="3" placeholder="مثلاً: بانتظار رد جهة خارجية"></textarea></label>
-    <label>الموعد الجديد المقترح<input type="datetime-local" id="extDate"></label>
-    <div class="m-err hidden" id="extErr"></div>
-    <div class="m-foot"><button class="btn ghost" id="extCancel">إلغاء</button><button class="btn primary" id="extSend">إرسال الطلب</button></div>
-  </div>
 </div>
 
-<div id="toasts" class="toasts"></div>
+<!-- ===================== NotificationPanel (real markup) ===================== -->
+<div id="NotificationPanelRoot" class="notification-panel-root" hidden aria-hidden="true">
+ <div class="notification-panel-backdrop" data-notification-action="close"></div>
+ <aside class="notification-panel" role="dialog" aria-modal="true">
+  <div id="NotificationHeaderMount" class="notification-panel__header-mount"></div>
+  <div class="notification-panel__body"><div id="NotificationEmptyMount" class="notification-panel__state-mount" hidden></div><div id="NotificationListMount" class="notification-panel__list-mount"></div></div>
+ </aside>
+</div>
+
+<!-- ===================== TakeActionModal (real markup + deadline group) ===================== -->
+<div class="modal fade" id="TakeActionModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+ <div class="modal-dialog modal-dialog-centered"><div class="modal-content">
+  <div class="modal-header take-action-header">
+   <div class="take-action-header-title-box">
+    <div class="take-action-header-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+    <div><h5 class="take-action-header-title">اتخاذ إجراء</h5><p class="take-action-header-subtitle" id="TakeActionSubtitle">تحديد الإجراء المطلوب وإرساله إلى الجهة المعنية</p></div>
+   </div>
+   <div class="take-action-close-btn" data-bs-dismiss="modal" title="إغلاق"><img width="20" src="img/close_icon.svg" alt="إغلاق"></div>
+  </div>
+  <div class="modal-body TakeActionModal_body">
+   <div class="row"><div class="take-action-field-group"><label class="take-action-label" for="TaProducer">إرسال إلى</label>
+    <select id="TaProducer" class="input_elem input_style input_height_style border_radius_actions_1 w-100 take-action-select"></select></div></div>
+   <div class="row g-2">
+    <div class="col-md-6 col-12"><div class="take-action-field-group"><label class="take-action-label" for="TaStatus">الحالة</label>
+     <select id="TaStatus" class="input_elem input_style input_height_style border_radius_actions_1 w-100 take-action-select status-select"></select></div></div>
+    <div class="col-md-6 col-12"><div class="take-action-field-group"><label class="take-action-label">المستند</label>
+     <select class="input_elem input_style input_height_style border_radius_actions_1 w-100 take-action-select"><option>بدون مستند</option><option>مذكرة داخلية — القالب الرسمي</option></select></div></div>
+   </div>
+   <div class="row" id="TaUsersBox" hidden><div class="take-action-field-group"><label class="take-action-label" for="TaUser">اختر المستخدمين</label>
+    <select id="TaUser" class="input_elem input_style input_height_style border_radius_actions_1 w-100 take-action-select"></select></div></div>
+   <!-- NEW: deadline for recipient -->
+   <div class="row" id="TaSlaBox" hidden><div class="take-action-field-group sla-group">
+    <div class="sla-group-head"><span class="take-action-label m-0">موعد الإنجاز للمستلم</span><span class="sla-new-tag">جديد</span><span class="sla-hint" id="TaSlaHint"></span></div>
+    <div class="row g-2">
+     <div class="col-5"><input id="TaSlaDays" class="input_elem input_style input_height_style border_radius_actions_1 w-100" type="number" min="0.5" step="0.5" title="المدة (يوم)" /></div>
+     <div class="col-7"><div class="sla-deadline-box" id="TaSlaDeadline">—</div></div>
+    </div>
+    <input id="TaSlaReason" class="input_elem input_style input_height_style border_radius_actions_1 w-100 mt-2" type="text" placeholder="سبب تغيير المدة الافتراضية..." hidden />
+   </div></div>
+   <div class="row"><div class="take-action-field-group"><label class="take-action-label" for="DescriptionInputForTakeActionModal">الهامش</label>
+    <textarea id="DescriptionInputForTakeActionModal" class="input_elem input_style border_radius_actions_1 w-100 resize_none_description take-action-textarea" placeholder="أدخل نص الهامش أو الملاحظات هنا..."></textarea></div></div>
+   <div class="row"><div class="take-action-field-group"><label class="take-action-label">المرفقات والوثائق</label>
+    <div class="take-action-upload-dropzone"><label class="w-100 m-0 d-flex flex-column align-items-center justify-content-center"><div class="upload-icon-circle mb-2"><img width="24" src="img/upload_file_icon.svg" alt=""></div><span class="upload-text-main">انقر هنا لرفع الوثائق أو اسحب الملفات</span><span class="upload-text-sub">الصيغ المدعومة: PDF, JPG, JPEG, PNG</span></label></div></div></div>
+   <div class="ta-error" id="TaError" hidden></div>
+  </div>
+  <div class="modal-footer take-action-footer"><div class="row w-100 g-2 m-0 align-items-center">
+   <div class="col-8 p-1"><button id="SubmitNewActionForTakeActionModal" type="button" class="button_style button_color_danger font_size_2m_button border_radius_actions_1 w-100 take-action-btn-submit text-white"><span class="text-white">تأكيد الإجراء</span></button></div>
+   <div class="col-4 p-1"><button type="button" class="button_style font_size_2m_button border_radius_actions_1 w-100 take-action-btn-cancel" data-bs-dismiss="modal">إلغاء</button></div>
+  </div></div>
+ </div></div>
+</div>
+
+<!-- ===================== PreviousProceduresModal ===================== -->
+<div class="modal modal-part fade" id="PreviousProceduresModal" tabindex="-1" aria-hidden="true">
+ <div class="modal-dialog modal-lg modal-dialog-centered modal-fullscreen session_modal-dialog customer_deatils_modal modal_shadow"><div class="modal-content right_left_modal session_modal-content">
+  <div class="modal-header modal_header_VA_style no_border_radius prev_procedures_header"><div class="host-action-stack">
+   <div class="host-action-title-row"><div class="modal_title prev_procedures_title">الحالات السابقة</div></div>
+   <div class="host-action-toolbar">
+    <button type="button" class="viewer-workflow-btn" data-open-movement>مسار العمل</button>
+    <button type="button" class="export_pdf_btn"><img src="img/pdf_icon.svg" alt="" /><span>تصدير PDF</span></button>
+    <div class="prev_procedures_close" data-bs-dismiss="modal"><img width="32" src="img/close_icon.svg" alt="إغلاق"></div>
+   </div></div></div>
+  <div class="modal-body overflow-auto p-0"><div class="px-4 pt-3 pb-3">
+   <div id="PrevSlaSummary"></div>
+   <table class="table_style direction_rtl"><thead><tr><th style="width:15%">اسم المستخدم</th><th style="width:13%">تاريخ/وقت الحالات</th><th style="width:20%">الحالة</th><th style="width:22%">الهامش</th><th class="sla-col-head" style="width:11%">المدة عند الجهة</th><th class="sla-col-head" style="width:11%">حالة المدة</th><th style="width:8%;text-align:center!important">المرفقات</th></tr></thead>
+    <tbody id="PreviousProceduresTBodyForPrevProcedModal" class="text_size_3x"></tbody></table>
+  </div></div>
+ </div></div>
+</div>
+
+<!-- ===================== DocumentMovmentModal ===================== -->
+<div class="modal modal-part fade" id="DocumentMovmentModal" tabindex="-1" aria-hidden="true">
+ <div class="modal-dialog modal-lg modal-dialog-centered modal-fullscreen session_modal-dialog customer_deatils_modal modal_shadow"><div class="modal-content right_left_modal session_modal-content">
+  <div class="modal-header modal_header_VA_style no_border_radius doc_movment_header prev_procedures_header"><div class="host-action-stack">
+   <div class="host-action-title-row"><div class="modal_title doc_movment_title prev_procedures_title">مسار العمل</div></div>
+   <div class="host-action-toolbar">
+    <button type="button" class="export_pdf_btn"><img src="img/pdf_icon.svg" alt="" /><span>تصدير PDF</span></button>
+    <div class="prev_procedures_close" data-bs-dismiss="modal"><img width="32" src="img/close_icon.svg" alt=""></div>
+   </div></div></div>
+  <div class="modal-body overflow-auto p-4"><div id="MovementFlow" class="sla-flow"></div></div>
+ </div></div>
+</div>
+
+<!-- ===================== DisplayDocumentsModal ===================== -->
+<div class="modal modal-part fade" id="DisplayDocumentsModal" tabindex="-1" aria-hidden="true">
+ <div class="modal-dialog modal-lg modal-dialog-centered right_left_modal_third_part session_modal-dialog customer_deatils_modal modal_shadow doc-split-dialog"><div class="modal-content right_left_modal session_modal-content doc-split-content">
+  <div class="modal-header modal_header_VA_style no_border_radius doc-split-header"><div class="row w_100">
+   <div class="col-lg" data-bs-dismiss="modal" style="cursor:pointer"><img width="32" src="img/close_icon.svg" alt=""></div>
+   <div class="col-lg text_right mt-auto mb-auto p-0 modal_title"><b>عرض المستند</b></div></div></div>
+  <div class="modal-body overflow-auto p-0" id="DisplayBody"></div>
+ </div></div>
+</div>
+
+<!-- Alerts (real Successful / Faild alert style) -->
+<div class="sla-alerts" id="AlertsMount"></div>
+
+<!-- Unobtrusive prototype controls -->
+<div class="proto-sim" id="ProtoSim">
+ <button class="proto-sim-toggle" id="ProtoSimToggle" title="أدوات النموذج الأولي">⏱ <span id="SimClock"></span></button>
+ <div class="proto-sim-body" id="ProtoSimBody" hidden>
+  <div class="proto-sim-row"><b>محاكاة مرور الوقت</b></div>
+  <div class="proto-sim-row"><button data-jump="3600000">+ ساعة</button><button data-jump="21600000">+ 6 ساعات</button><button data-jump="86400000" class="pri">+ يوم</button></div>
+  <div class="proto-sim-row"><label>السرعة <select id="SimSpeed"><option value="1">حقيقي</option><option value="3600">ساعة/ثانية</option><option value="21600">6 ساعات/ثانية</option></select></label></div>
+  <div class="proto-sim-row"><button id="ResetBtn" class="danger">إعادة ضبط البيانات</button></div>
+ </div>
+</div>
+
+<script src="lib/bootstrap5/bootstrap.bundle.min.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

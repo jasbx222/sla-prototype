@@ -1,0 +1,498 @@
+/* Workflow History — first-prompt audit trail with SIDE timeline (MainPage only) */
+
+:root {
+    --wf-history-blue: #2563eb;
+    --wf-history-green: #16a34a;
+    --wf-history-orange: #ea580c;
+    --wf-history-gray: #6b7280;
+    --wf-history-border: #e5e7eb;
+    --wf-history-bg: #f8fafc;
+    --wf-history-card-bg: #ffffff;
+    --wf-history-text: #1f2937;
+    --wf-history-muted: #6b7280;
+    --wf-history-radius: 12px;
+}
+
+#DepartmentActionsModal.wf-history-modal .modal-dialog {
+    max-width: 520px;
+    width: min(520px, calc(100vw - 24px));
+    min-width: 300px;
+}
+
+#DepartmentActionsModal.wf-history-modal .modal-content {
+    border: 1px solid var(--wf-history-border);
+    border-radius: 14px;
+    box-shadow: 0 12px 40px rgba(15, 23, 42, 0.12);
+    overflow: hidden;
+}
+
+#DepartmentActionsModal.wf-history-modal .wf-history-header {
+    display: block;
+    padding: 0;
+    background: var(--wf-history-bg);
+    border-bottom: 1px solid var(--wf-history-border);
+    cursor: move;
+    user-select: none;
+}
+
+#DepartmentActionsModal.wf-history-modal #DepartmentActionsModalHeaderContent {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 16px;
+    width: 100%;
+}
+
+#DepartmentActionsModal.wf-history-modal .wf-history-header-main {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    min-width: 0;
+    flex: 1;
+    text-align: right;
+    direction: rtl;
+}
+
+#DepartmentActionsModal.wf-history-modal .wf-history-header-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: #eff6ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+#DepartmentActionsModal.wf-history-modal .wf-history-header-icon img {
+    width: 22px;
+    height: 22px;
+}
+
+#DepartmentActionsModal.wf-history-modal .wf-history-title {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--wf-history-text);
+    line-height: 1.35;
+    word-break: break-word;
+}
+
+#DepartmentActionsModal.wf-history-modal .wf-history-subtitle {
+    margin: 2px 0 0;
+    font-size: 0.8rem;
+    color: var(--wf-history-muted);
+    font-weight: 500;
+}
+
+#DepartmentActionsModal.wf-history-modal .wf-history-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+#DepartmentActionsModal.wf-history-modal .wf-history-status-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+#DepartmentActionsModal.wf-history-modal .wf-history-status-chip.is-completed {
+    background: #dcfce7;
+    color: #166534;
+}
+
+#DepartmentActionsModal.wf-history-modal .wf-history-status-chip.is-pending {
+    background: #ffedd5;
+    color: #9a3412;
+}
+
+#DepartmentActionsModal.wf-history-modal .wf-history-close {
+    margin: 0;
+    padding: 4px;
+}
+
+#DepartmentActionsModal.wf-history-modal .wf-history-body {
+    padding: 16px 16px 12px;
+    max-height: 70vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    direction: rtl;
+    text-align: right;
+    background: #fff;
+}
+
+#DepartmentActionsModal.wf-history-modal .wf-history-footer {
+    padding: 8px 16px 12px;
+    border-top: 1px solid var(--wf-history-border);
+    background: #fff;
+}
+
+#DepartmentActionsModal.wf-history-modal .wf-history-footer .btn {
+    border-radius: 8px;
+    font-size: 0.85rem;
+}
+
+/* Side timeline — NOT through card center */
+.wf-history-timeline {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+
+.wf-history-timeline::before {
+    content: "";
+    position: absolute;
+    top: 12px;
+    bottom: 12px;
+    right: 11px;
+    width: 2px;
+    background: var(--wf-history-border);
+}
+
+.wf-history-item {
+    position: relative;
+    padding: 0 28px 16px 0;
+}
+
+.wf-history-item:last-child {
+    padding-bottom: 0;
+}
+
+.wf-history-node {
+    position: absolute;
+    top: 18px;
+    right: 5px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    background: var(--wf-history-gray);
+    box-shadow: 0 0 0 2px var(--wf-history-gray);
+    z-index: 1;
+}
+
+.wf-history-item.is-outgoing .wf-history-node {
+    background: var(--wf-history-blue);
+    box-shadow: 0 0 0 2px var(--wf-history-blue);
+}
+
+.wf-history-item.is-incoming .wf-history-node {
+    background: var(--wf-history-green);
+    box-shadow: 0 0 0 2px var(--wf-history-green);
+}
+
+.wf-history-item.is-pending .wf-history-node {
+    background: var(--wf-history-orange);
+    box-shadow: 0 0 0 2px var(--wf-history-orange);
+}
+
+.wf-history-card {
+    background: var(--wf-history-card-bg);
+    border: 1px solid var(--wf-history-border);
+    border-radius: var(--wf-history-radius);
+    padding: 14px 16px;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+    transition: box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+.wf-history-card:hover {
+    border-color: #cbd5e1;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
+}
+
+/* Card Top Status Bar */
+.wf-history-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.wf-history-step-status {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.wf-history-step-status.is-completed {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.wf-history-step-status.is-pending {
+    background: #ffedd5;
+    color: #9a3412;
+}
+
+.wf-history-action-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #fff;
+    white-space: nowrap;
+}
+
+.wf-history-action-badge.is-outgoing {
+    background: var(--wf-history-blue);
+}
+
+.wf-history-action-badge.is-incoming {
+    background: var(--wf-history-green);
+}
+
+/* Action Row (if any) */
+.wf-history-action-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8rem;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed #e2e8f0;
+}
+
+.wf-history-action-label {
+    font-weight: 600;
+    color: var(--wf-history-muted);
+}
+
+.wf-history-action-val {
+    font-weight: 600;
+    color: var(--wf-history-text);
+}
+
+/* Lightweight Person Section - NO nested cards, NO borders, NO heavy box */
+.wf-history-person-section {
+    position: relative;
+    padding: 0;
+    margin: 0;
+}
+
+/* Subtle, Compact Role Tag */
+.wf-history-role-tag {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 4px;
+    letter-spacing: 0.2px;
+    margin-bottom: 4px;
+}
+
+.wf-history-role-tag.is-sender {
+    background: #eff6ff;
+    color: #2563eb;
+}
+
+.wf-history-role-tag.is-receiver {
+    background: #ecfdf5;
+    color: #059669;
+}
+
+/* Prominent Person Name Row */
+.wf-history-person-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 2px 0 4px 0;
+}
+
+.wf-history-person-icon {
+    width: 15px;
+    height: 15px;
+    flex-shrink: 0;
+    color: #64748b;
+}
+
+.wf-history-person-name {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--wf-history-text);
+    line-height: 1.4;
+    word-break: break-word;
+}
+
+/* Plain Lightweight Department Row - NOT a textbox, NO borders */
+.wf-history-dept-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.82rem;
+    color: #475569;
+    margin-top: 3px;
+    margin-bottom: 4px;
+}
+
+.wf-history-dept-icon {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+    color: #d97706;
+}
+
+.wf-history-dept-name {
+    font-weight: 500;
+    color: #475569;
+    word-break: break-word;
+}
+
+/* Lightweight Permissions Section - Compact, NOT a card, NOT a textbox */
+.wf-history-perms-section {
+    margin-top: 5px;
+}
+
+.wf-history-perms-label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #4f46e5;
+    margin-bottom: 4px;
+}
+
+.wf-history-perms-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #6366f1;
+    width: 12px;
+    height: 12px;
+    flex-shrink: 0;
+}
+
+.wf-history-chips-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+/* Compact Permission Chip */
+.wf-history-perm-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    font-size: 0.73rem;
+    font-weight: 500;
+    line-height: 1.35;
+    color: #3730a3;
+    background: #f5f7ff;
+    border: 1px solid #e0e7ff;
+    border-radius: 5px;
+    word-break: break-word;
+    transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.wf-history-perm-chip:hover {
+    background: #eef2ff;
+    border-color: #c7d2fe;
+}
+
+/* Subtle, Delicate Divider Between Sections */
+.wf-history-divider {
+    border: 0;
+    border-top: 1px solid #f1f5f9;
+    margin: 10px 0;
+}
+
+/* Destination Route Row - Plain lightweight row */
+.wf-history-dest-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.82rem;
+    color: #334155;
+    margin-top: 2px;
+    margin-bottom: 4px;
+}
+
+.wf-history-dest-arrow {
+    color: #0284c7;
+    font-weight: 700;
+    font-size: 0.95rem;
+    line-height: 1;
+    user-select: none;
+}
+
+.wf-history-dest-label {
+    color: #64748b;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.wf-history-dest-val {
+    color: #0f172a;
+    font-weight: 600;
+    word-break: break-word;
+}
+
+/* Description / Note Row */
+.wf-history-note-row {
+    font-size: 0.8rem;
+    color: #78350f;
+    background: #fffbeb;
+    padding: 4px 8px;
+    border-radius: 5px;
+    margin-top: 6px;
+    margin-bottom: 4px;
+    line-height: 1.4;
+}
+
+.wf-history-note-label {
+    font-weight: 600;
+    margin-left: 4px;
+}
+
+.wf-history-note-text {
+    word-break: break-word;
+}
+
+/* Date and Time Row */
+.wf-history-datetime-row {
+    font-size: 0.73rem;
+    color: #94a3b8;
+    margin-top: 8px;
+    direction: ltr;
+    text-align: left;
+}
+
+.wf-history-empty {
+    padding: 18px 8px;
+    text-align: center;
+    color: var(--wf-history-muted);
+    font-size: 0.9rem;
+}
+
+@media (max-width: 576px) {
+    #DepartmentActionsModal.wf-history-modal .modal-dialog {
+        width: calc(100vw - 16px);
+        min-width: 0;
+        margin: 0.5rem auto;
+    }
+
+    #DepartmentActionsModal.wf-history-modal .wf-history-body {
+        padding: 12px;
+    }
+
+    .wf-history-user-name {
+        font-size: 1rem;
+    }
+}

@@ -1,0 +1,393 @@
+/* ==========================================================================
+   Sidebar Navigation — enterprise redesign
+   Namespaced custom properties (--sbn-*) so this never collides with the
+   legacy --base-color/--bg-hover tokens still used by the top app bar.
+   ========================================================================== */
+
+.sbn-root {
+    --sbn-primary: #1E4E79;
+    --sbn-accent: #0F6CBD;
+    --sbn-bg: #FFFFFF;
+    --sbn-page-bg: #F7F9FC;
+    --sbn-border: #E6EAF0;
+    --sbn-text: #1D2939;
+    --sbn-text-secondary: #667085;
+    --sbn-hover: #F2F5F8;
+    --sbn-active: #EAF4FF;
+    --sbn-danger: #B42318;
+    --sbn-radius: 10px;
+    --sbn-width-expanded: 280px;
+    --sbn-transition: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ---- Shell: reuses the existing off-canvas toggle (.dispalySide / the top
+   bar button), just redesigned visually and widened to 280px. ---- */
+.sbn-root.sidenav {
+    position: fixed !important;
+    top: 62px !important;
+    bottom: 0 !important;
+    right: 0 !important;
+    left: auto !important;
+    z-index: 999 !important;
+    height: calc(100vh - 62px) !important;
+    width: var(--sbn-width-expanded) !important;
+    background-color: var(--sbn-bg) !important;
+    border: none !important;
+    border-inline-start: 1px solid var(--sbn-border) !important;
+    box-shadow: -8px 0 24px rgba(16, 24, 40, 0.06) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    margin-right: 0 !important;
+    transition: margin-right var(--sbn-transition) !important;
+    font-family: "IBMPlexSansArabic", "Rubik", sans-serif !important;
+    color: var(--sbn-text) !important;
+    overflow: hidden !important;
+}
+
+.sbn-root.dispalySide {
+    margin-right: calc(-1 * var(--sbn-width-expanded)) !important;
+}
+
+.sbn-root a {
+    right: auto !important;
+    left: auto !important;
+    width: auto !important;
+    margin: 0 !important;
+    text-decoration: none !important;
+}
+
+/* ---- Header ---- */
+.sbn-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 16px 14px;
+    border-bottom: 1px solid var(--sbn-border);
+    flex-shrink: 0;
+}
+
+.sbn-header__brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+}
+
+.sbn-header__logo {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.sbn-header__text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.sbn-header__title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--sbn-primary);
+}
+
+.sbn-env-badge {
+    display: inline-block;
+    width: fit-content;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 1px 8px;
+    border-radius: 999px;
+    margin-top: 2px;
+}
+
+.sbn-env-badge--prod {
+    background: #DCFCE7;
+    color: #15803D;
+}
+
+.sbn-env-badge--test {
+    background: #FEF3C7;
+    color: #B45309;
+}
+
+.sbn-icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--sbn-text-secondary);
+    cursor: pointer;
+    transition: background-color 150ms ease, color 150ms ease;
+    flex-shrink: 0;
+}
+
+.sbn-icon-btn svg,
+.sbn-icon-btn img {
+    width: 16px;
+    height: 16px;
+}
+
+.sbn-icon-btn:hover {
+    background-color: var(--sbn-hover);
+    color: var(--sbn-primary);
+}
+
+.sbn-icon-btn:focus-visible {
+    outline: 2px solid var(--sbn-accent);
+    outline-offset: 2px;
+}
+
+.sbn-icon-btn--danger:hover {
+    background-color: #FEF2F2;
+    color: var(--sbn-danger);
+}
+
+/* ---- Search ---- */
+.sbn-search {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--sbn-border);
+    flex-shrink: 0;
+}
+
+.sbn-search__icon {
+    position: absolute;
+    inset-inline-start: 24px;
+    display: inline-flex;
+    color: var(--sbn-text-secondary);
+    pointer-events: none;
+}
+
+.sbn-search__icon svg {
+    width: 15px;
+    height: 15px;
+}
+
+.sbn-search__input {
+    width: 100%;
+    height: 36px;
+    border: 1px solid var(--sbn-border);
+    border-radius: 8px;
+    background-color: var(--sbn-page-bg);
+    padding-inline-start: 34px;
+    padding-inline-end: 10px;
+    font-size: 13px;
+    color: var(--sbn-text);
+    outline: none;
+    transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.sbn-search__input:focus {
+    border-color: var(--sbn-accent);
+    box-shadow: 0 0 0 3px rgba(15, 108, 189, 0.12);
+    background-color: var(--sbn-bg);
+}
+
+/* ---- Scrollable body ---- */
+.sbn-body {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 10px 8px;
+    scrollbar-width: thin;
+    scrollbar-color: #d7dbe2 transparent;
+}
+
+.sbn-body::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sbn-body::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sbn-body::-webkit-scrollbar-thumb {
+    background-color: #d7dbe2;
+    border-radius: 8px;
+}
+
+.sbn-body::-webkit-scrollbar-thumb:hover {
+    background-color: #b9c0ca;
+}
+
+/* ---- Groups ---- */
+.sbn-group {
+    margin-bottom: 10px;
+}
+
+.sbn-group__header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 6px 10px;
+    text-align: right;
+}
+
+.sbn-group__title {
+    flex: 1 1 auto;
+    text-align: right;
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--sbn-primary);
+    letter-spacing: 0.2px;
+}
+
+.sbn-group__count {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--sbn-text-secondary);
+    background-color: var(--sbn-page-bg);
+    border-radius: 999px;
+    padding: 1px 7px;
+}
+
+.sbn-group__list {
+    list-style: none;
+    margin: 2px 0 6px;
+    padding: 0;
+}
+
+/* ---- Menu items ---- */
+.sbn-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 10px;
+    margin: 1px 0;
+    border-radius: 8px;
+    color: var(--sbn-text);
+    text-decoration: none;
+    font-size: 13.5px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 150ms ease, color 150ms ease, box-shadow 150ms ease;
+    position: relative;
+}
+
+.sbn-item:hover {
+    background-color: var(--sbn-hover);
+}
+
+.sbn-item:focus-visible {
+    outline: 2px solid var(--sbn-accent);
+    outline-offset: -2px;
+}
+
+.sbn-item .sbn-item__icon {
+    display: inline-flex;
+    flex-shrink: 0;
+    color: var(--sbn-text-secondary);
+    transition: color 150ms ease;
+}
+
+.sbn-item .sbn-item__icon svg {
+    width: 18px;
+    height: 18px;
+}
+
+.sbn-item .sbn-item__label {
+    flex: 1 1 auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.sbn-item.sbn-item--active {
+    background-color: var(--sbn-active);
+    color: var(--sbn-primary);
+    font-weight: 700;
+    box-shadow: 0 1px 6px rgba(15, 108, 189, 0.16);
+}
+
+.sbn-item.sbn-item--active .sbn-item__icon {
+    color: var(--sbn-accent);
+}
+
+.sbn-item mark {
+    background-color: #FEF08A;
+    color: inherit;
+    border-radius: 2px;
+    padding: 0 1px;
+}
+
+/* Badges */
+.sbn-badge {
+    flex-shrink: 0;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 1px 7px;
+    border-radius: 999px;
+    line-height: 1.5;
+}
+
+.sbn-badge--new { background: #DCFCE7; color: #15803D; }
+.sbn-badge--beta { background: #EDE9FE; color: #6D28D9; }
+.sbn-badge--updated { background: #DBEAFE; color: #1D4ED8; }
+.sbn-badge--warning { background: #FEF3C7; color: #B45309; }
+.sbn-badge--count { background: var(--sbn-danger); color: #fff; min-width: 16px; text-align: center; }
+
+.sbn-empty {
+    padding: 24px 12px;
+    text-align: center;
+    font-size: 13px;
+    color: var(--sbn-text-secondary);
+}
+
+/* ---- Footer: a single, unmistakably clear logout action ---- */
+.sbn-footer {
+    padding: 14px;
+    border-top: 1px solid var(--sbn-border);
+    flex-shrink: 0;
+}
+
+.sbn-footer__logout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    height: 42px;
+    border-radius: 8px;
+    background-color: #FEF2F2;
+    color: var(--sbn-danger);
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 700;
+    transition: background-color 150ms ease;
+}
+
+.sbn-footer__logout svg {
+    width: 18px;
+    height: 18px;
+}
+
+.sbn-footer__logout:hover {
+    background-color: #FEE2E2;
+    color: var(--sbn-danger);
+}
+
+.sbn-footer__logout:focus-visible {
+    outline: 2px solid var(--sbn-danger);
+    outline-offset: 2px;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 768px) {
+    .sbn-root.sidenav {
+        width: min(var(--sbn-width-expanded), 85vw);
+    }
+}

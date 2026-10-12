@@ -1,0 +1,403 @@
+/* ==========================================================================
+   Book View + Linked Internal Memos — Split Pane Layout (عرض الكتاب المقسوم)
+   Reuses the --ref-* design tokens defined in referencedDocumentDetails.css
+   ========================================================================== */
+
+#DisplayDocumentsModal .modal-dialog.doc-split-dialog {
+    min-width: 680px;
+    max-width: 1040px;
+}
+
+.doc-split-content {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    height: 100vh;
+    font-family: 'Noto Naskh Arabic', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.doc-split-header {
+    flex-shrink: 0;
+}
+
+/* ==========================================================================
+   Split body shell
+   ========================================================================== */
+.doc-split-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
+    min-height: 0;
+}
+
+.doc-split-pane {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-height: 0;
+}
+
+.doc-split-pane[hidden] {
+    display: none !important;
+}
+
+.doc-split-pane-top,
+.doc-split-pane-bottom {
+    transition: flex-grow 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+                flex-basis 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+                min-height 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.3s ease;
+}
+
+.doc-split-pane-top {
+    flex: 1 1 50%;
+    min-height: 180px;
+}
+
+.doc-split-pane-bottom {
+    flex: 1 1 50%;
+    min-height: 180px;
+    background: var(--ref-bg-page, #f8fafc);
+}
+
+.doc-split-pane-scroll {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: auto;
+    min-height: 0;
+}
+
+.doc-split-pane-bottom .doc-split-pane-scroll {
+    padding: 14px 18px 18px;
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.3s ease 0.15s, transform 0.3s ease 0.15s;
+}
+
+/* Hide the entire references half when linked memos don't apply to this document type */
+.doc-split-body.no-references .doc-split-divider,
+.doc-split-body.no-references .doc-split-pane-bottom {
+    display: none !important;
+}
+
+.doc-split-body.no-references .doc-split-pane-top {
+    flex: 1 1 100%;
+}
+
+/* Collapsed (default): top fills, bottom eases down to its header only.
+   flex-basis is always a concrete px/% value (never "auto") on both panes —
+   transitioning to/from "auto" does not animate in any browser, it just
+   snaps, which is why this needs a fixed collapsed height for the header. */
+.doc-split-body.refs-collapsed .doc-split-pane-top {
+    flex: 1 1 0%;
+    min-height: 180px;
+}
+
+.doc-split-body.refs-collapsed .doc-split-pane-bottom {
+    flex: 0 0 64px;
+    min-height: 0;
+}
+
+.doc-split-body.refs-collapsed .doc-split-pane-bottom .doc-split-pane-scroll {
+    opacity: 0;
+    transform: translateY(-8px);
+    transition: opacity 0.15s ease, transform 0.15s ease;
+    pointer-events: none;
+    max-height: 0;
+    overflow: hidden;
+}
+
+.doc-split-body.refs-collapsed .doc-split-toggle-btn svg {
+    transform: rotate(180deg);
+}
+
+/* Expanded: "الكتب المرتبطة" eases open to cover the full split body, top pane fades away */
+.doc-split-body:not(.refs-collapsed):not(.no-references) .doc-split-pane-top {
+    flex: 0 0 0%;
+    min-height: 0;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.doc-split-body:not(.refs-collapsed):not(.no-references) .doc-split-pane-bottom {
+    flex: 1 1 0%;
+    min-height: 180px;
+}
+
+/* ==========================================================================
+   Pane header (icon + title + optional toolbar)
+   ========================================================================== */
+.doc-split-pane-header {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 14px 22px;
+    background: #ffffff;
+    border-bottom: 1px solid var(--ref-border, #e2e8f0);
+}
+
+.doc-split-pane-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+}
+
+.doc-split-pane-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    flex-shrink: 0;
+}
+
+.doc-split-pane-icon svg {
+    width: 18px;
+    height: 18px;
+}
+
+.doc-split-pane-icon-books {
+    background: #eef2ff;
+    color: #4338ca;
+}
+
+.doc-split-pane-icon-ref {
+    background: var(--ref-primary-light, rgba(158, 29, 21, 0.08));
+    color: var(--ref-primary, #9e1d15);
+}
+
+.doc-split-pane-title-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.doc-split-pane-title-text h3 {
+    margin: 0;
+    font-size: 0.98rem;
+    font-weight: 700;
+    color: var(--ref-text-main, #1e293b);
+}
+
+.doc-split-pane-title-text small {
+    font-size: 0.74rem;
+    font-weight: 400;
+    color: var(--ref-text-muted, #64748b);
+}
+
+.doc-split-pane-title .ref-tab-count {
+    margin-inline-start: auto;
+    flex-shrink: 0;
+}
+
+.doc-split-toolbar {
+    margin: 0;
+}
+
+/* ==========================================================================
+   Divider / collapse handle
+   ========================================================================== */
+.doc-split-divider {
+    position: relative;
+    flex-shrink: 0;
+    height: 36px;
+    z-index: 5;
+}
+
+.doc-split-divider::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 2px;
+    transform: translateY(-50%);
+    background: linear-gradient(90deg, transparent, var(--ref-primary, #9e1d15) 15%, var(--ref-primary, #9e1d15) 85%, transparent);
+}
+
+.doc-split-toggle-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    border: 1.5px solid var(--ref-primary-border, rgba(158, 29, 21, 0.22));
+    color: var(--ref-primary, #9e1d15);
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.14);
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    padding: 0;
+}
+
+.doc-split-toggle-btn:hover {
+    background: var(--ref-primary, #9e1d15);
+    color: #ffffff;
+    transform: translate(-50%, -50%) scale(1.08);
+}
+
+.doc-split-toggle-btn svg {
+    transition: transform 0.25s ease;
+}
+
+/* ==========================================================================
+   Empty states — reuses the existing no_search_elem_icon.svg for both panes
+   (no hand-drawn icons), with a soft entrance + gentle float animation
+   ========================================================================== */
+@keyframes docSplitEmptyIn {
+    0% {
+        opacity: 0;
+        transform: translateY(18px) scale(0.9);
+    }
+    55% {
+        opacity: 1;
+        transform: translateY(-4px) scale(1.03);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes docSplitEmptyFloat {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-6px);
+    }
+}
+
+#DisplayDocumentsModal #NoRecordMessage_UploadDocument img,
+#DisplayDocumentsModal #NoRecordMessage_ReferencedDocumentsList .ref-empty-icon {
+    animation: docSplitEmptyIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both,
+               docSplitEmptyFloat 3.2s ease-in-out 0.6s infinite;
+}
+
+#DisplayDocumentsModal #NoRecordMessage_UploadDocument div,
+#DisplayDocumentsModal #NoRecordMessage_ReferencedDocumentsList .ref-empty-title,
+#DisplayDocumentsModal #NoRecordMessage_ReferencedDocumentsList .ref-empty-subtitle {
+    animation: docSplitEmptyIn 0.5s ease 0.15s both;
+}
+
+/* The bottom pane's empty state now shows the same wide illustration as the
+   top pane's, so it needs the full-size artwork instead of the small
+   circular icon badge used by the other ref-empty-state instances */
+#NoRecordMessage_ReferencedDocumentsList.ref-empty-state {
+    background: transparent;
+    border: none;
+}
+
+#NoRecordMessage_ReferencedDocumentsList .ref-empty-icon {
+    width: auto;
+    height: 110px;
+    background: none;
+    border: none;
+    border-radius: 0;
+    margin-bottom: 16px;
+}
+
+#NoRecordMessage_ReferencedDocumentsList .ref-empty-icon img {
+    height: 100%;
+    width: auto;
+}
+
+/* ==========================================================================
+   Responsive — Tablet
+   ========================================================================== */
+@media (max-width: 991px) {
+    #DisplayDocumentsModal .modal-dialog.doc-split-dialog {
+        width: 82vw;
+        min-width: 0;
+        max-width: none;
+    }
+
+    .doc-split-pane-header {
+        padding: 12px 16px;
+    }
+
+    .doc-split-pane-title-text h3 {
+        font-size: 0.92rem;
+    }
+}
+
+/* ==========================================================================
+   Responsive — Mobile
+   ========================================================================== */
+@media (max-width: 767px) {
+    #DisplayDocumentsModal .modal-dialog.doc-split-dialog {
+        width: 100vw !important;
+        height: 100vh;
+    }
+
+    .doc-split-pane-top {
+        min-height: 120px;
+    }
+
+    .doc-split-pane-bottom {
+        min-height: 110px;
+    }
+
+    .doc-split-pane-header {
+        padding: 10px 14px;
+        gap: 8px;
+    }
+
+    .doc-split-pane-icon {
+        width: 28px;
+        height: 28px;
+    }
+
+    .doc-split-pane-icon svg {
+        width: 15px;
+        height: 15px;
+    }
+
+    .doc-split-pane-title-text h3 {
+        font-size: 0.86rem;
+    }
+
+    .doc-split-pane-title-text small {
+        font-size: 0.68rem;
+    }
+
+    .doc-split-toolbar .ref-filter-pills {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding-bottom: 2px;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .doc-split-toolbar .ref-filter-pill {
+        flex-shrink: 0;
+    }
+
+    .doc-split-pane-bottom .doc-split-pane-scroll {
+        padding: 10px 12px 14px;
+    }
+}
+
+/* Short-viewport safeguard (e.g. landscape phones) so neither pane collapses to nothing */
+@media (max-height: 640px) {
+    .doc-split-pane-top {
+        min-height: 110px;
+    }
+
+    .doc-split-pane-bottom {
+        min-height: 100px;
+    }
+
+    .doc-split-pane-header {
+        padding: 8px 14px;
+    }
+}

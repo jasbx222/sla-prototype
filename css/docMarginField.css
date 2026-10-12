@@ -1,0 +1,65 @@
+/* Shared margin/textarea field — matched to Take Action modal design */
+.doc-margin-field {
+    --dm-primary: var(--base-color, #9e1d15);
+    --dm-border: #efefef;
+    --dm-text: #49434c;
+    --dm-text-secondary: #7b8494;
+    --dm-radius: 8px;
+    --dm-focus-ring: rgba(185, 28, 28, 0.08);
+}
+
+.doc-margin-field__label {
+    align-items: center;
+    color: var(--dm-text);
+    display: flex;
+    font-size: 14px;
+    font-weight: 600;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.doc-margin-field__textarea-box {
+    position: relative;
+}
+
+.doc-margin-field__textarea {
+    background: #fff;
+    border: 1px solid var(--dm-border);
+    border-radius: var(--dm-radius);
+    color: var(--dm-text);
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 1.6;
+    min-height: 120px;
+    padding: 12px 12px 28px;
+    resize: vertical;
+    transition: border-color 150ms ease, box-shadow 150ms ease;
+    width: 100%;
+    box-sizing: border-box;
+    outline: none;
+}
+
+.doc-margin-field__textarea:focus {
+    border-color: var(--dm-primary);
+    box-shadow: 0 0 0 3px var(--dm-focus-ring);
+}
+
+.doc-margin-field__textarea::placeholder {
+    color: #AAAAAA;
+}
+
+.doc-margin-field__counter {
+    bottom: 10px;
+    color: var(--dm-text-secondary);
+    font-size: 11px;
+    font-weight: 400;
+    inset-inline-end: 12px;
+    position: absolute;
+}
+
+.doc-margin-field__hint {
+    color: var(--dm-text-secondary);
+    font-size: 11px;
+    font-weight: 400;
+    margin: 6px 0 0;
+}

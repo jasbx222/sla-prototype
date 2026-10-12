@@ -1,0 +1,20 @@
+﻿
+
+.pagination li {
+    border: none !important;
+    margin: 0px !important;
+}
+
+.page-item.active .page-link {
+    background-color: var(--base-color);
+    border-color: var(--base-color);
+}
+
+.page-link {
+    color: #49434C;
+}
+
+
+.page-item:hover .page-link {
+    color: #49434C;
+}
